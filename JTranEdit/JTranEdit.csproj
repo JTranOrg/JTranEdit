@@ -1,0 +1,100 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>JTran Logo.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="JTranEditor.xaml - Copy.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Buttons\add.png" />
+    <None Remove="Assets\Buttons\delete.png" />
+    <None Remove="Assets\Buttons\glyphicons-openfile.png" />
+    <None Remove="Assets\Buttons\glyphicons-save.png" />
+    <None Remove="Assets\Buttons\glyphicons-saveas.png" />
+    <None Remove="Assets\Buttons\glyphicons-square-play.png" />
+    <None Remove="Assets\CustomHighlighting.xml" />
+    <None Remove="Assets\Menu Icons\Copy.ico" />
+    <None Remove="Assets\Menu Icons\Copy_16x.svg" />
+    <None Remove="Assets\Menu Icons\Cut.ico" />
+    <None Remove="Assets\Menu Icons\Cut_16x.svg" />
+    <None Remove="Assets\Menu Icons\Paste.ico" />
+    <None Remove="Assets\Menu Icons\Paste_16x.svg" />
+    <None Remove="Assets\Menu Icons\Redo.ico" />
+    <None Remove="Assets\Menu Icons\Redo_16x.svg" />
+    <None Remove="Assets\Menu Icons\ShowEndOfLine.ico" />
+    <None Remove="Assets\Menu Icons\ShowLineNumbers_16x.svg" />
+    <None Remove="Assets\Menu Icons\Undo.ico" />
+    <None Remove="Assets\Menu Icons\Undo_16x.svg" />
+    <None Remove="Assets\Syntax.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="JTranEditor - Copy.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Buttons\add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\delete.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\glyphicons-openfile.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\glyphicons-save.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\glyphicons-saveas.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Buttons\glyphicons-square-play.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.0.1" />
+    <PackageReference Include="JTran" Version="2.3.1" />
+    <PackageReference Include="MondoCore.Common" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\CustomHighlighting.xml" />
+    <EmbeddedResource Include="Assets\Syntax.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JTran.Syntax\JTran.Syntax.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Menu Icons\Copy.ico" />
+    <Resource Include="Assets\Menu Icons\Cut.ico" />
+    <Resource Include="Assets\Menu Icons\Paste.ico" />
+    <Resource Include="Assets\Menu Icons\Redo.ico" />
+    <Resource Include="Assets\Menu Icons\Undo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="user.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>user.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="user.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>user.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>
