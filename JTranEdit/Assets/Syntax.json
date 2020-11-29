@@ -1,0 +1,101 @@
+{
+  "Elements": 
+  [
+    {
+      "name":         "#()",
+      "params":       true,
+      "description":  "#()\nOutput the result of an expression"
+    },
+    {
+      "name":         "#array",
+      "params":       true,
+      "block":        true,
+      "description":  "#array(arrayName)\nOutput an array"
+    },
+    {
+      "name":         "#arrayitem",
+      "block":        true,
+      "description":  "#arrayitem\nOutput an array item"
+    },
+    {
+      "name":         "#bind",
+      "params":       true,
+      "block":        true,
+      "description":  "#bind(expression)\nMakes the given expression the current scope"
+    },
+    {
+      "name":         "#calltemplate",
+      "params":       true,
+      "block":        true,
+      "description":  "#calltemplate(templateName)\nCalls a template"
+    },
+    {
+      "name":         "#catch",
+      "block":        true,
+      "description":  "#catch\nCatches a previously thrown #throw"
+    },
+    {
+      "name":         "#copyof",
+      "params":       true,
+      "description":  "#copyof(expression)\nOutputs a copy of the given expression"
+    },
+    {
+      "name":         "#else",
+      "block":        true,
+      "description":  "#else\nOutputs the block only if the previous #if and any #elseif's evaluate to false"
+    },
+    {
+      "name":         "#elseif",
+      "params":       true,
+      "block":        true,
+      "description":  "#elseif(expression)\nOutputs the block only if the previous #if and any #elseif's evaluate to false and the given expression evaluates to true"
+    },
+    {
+      "name":         "#foreach",
+      "params":       true,
+      "block":        true,
+      "description":  "#foreach(expression, [arrayName])\nIterates over a list"
+    },
+    {
+      "name":         "#function",
+      "params":       true,
+      "block":        true,
+      "description":  "#function(funcName)\nCreates a function that can be called from any expression"
+    },
+    {
+      "name":         "#if",
+      "params":       true,
+      "block":        true,
+      "description":  "#if(expression)\nOutputs the block only if the given expression evaluates to true"
+    },
+    {
+      "name":         "#include",
+      "description":  "#include\nIncludes the contents of an external file"
+    },
+    {
+      "name":         "#message",
+      "params":       false,
+      "description":  "#message\nOutputs a message to the console"
+    },
+    {
+      "name":         "#template",
+      "block":        true,
+      "description":  "#template(templateName, [[paramNames]])\nCreates a template that can be called from other JTran code"
+    },
+    {
+      "name":         "#throw",
+      "params":       true,
+      "description":  "#throw([errorCode])\nThrows an error"
+    },
+    {
+      "name":         "#try",
+      "block":        true,
+      "description":  "#try\nSets up a try/catch boundry"
+    },
+    {   
+      "name":         "#variable",
+      "params":       true,
+      "description":  "#variable(varName)\nCreates a variable for use in expressions"
+    }
+  ]
+}

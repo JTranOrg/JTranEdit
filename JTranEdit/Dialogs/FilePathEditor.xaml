@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="JTranEdit.Dialogs.FilePathEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JTranEdit.Dialogs"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="thisControl">
+    <StackPanel Visibility="Visible" Orientation="Vertical">
+        <ListBox x:Name="winListBox" Height="200" ItemsSource="{Binding ElementName=thisControl, Path=FilePaths, Mode=TwoWay}" HorizontalAlignment="Stretch">
+
+        </ListBox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btnAdd" HorizontalAlignment="Right" Margin="5 5 0 5" Width="24" Height="24" Padding="3" ToolTip="Add Include Path">
+                <Image Source="../Assets/Buttons/add.png"></Image>
+            </Button>
+            <Button x:Name="btnRemove" HorizontalAlignment="Right" Margin="5" Width="24" Height="24" ToolTip="Remove Include Path">
+                <Image Source="../Assets/Buttons/delete.png"></Image>
+            </Button>
+        </StackPanel>
+    </StackPanel>
+
+</UserControl>
