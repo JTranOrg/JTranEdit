@@ -41,9 +41,9 @@
                     <RowDefinition Height="5"></RowDefinition>
                     <RowDefinition Height="31" MinHeight="31"></RowDefinition>
                  </Grid.RowDefinitions>
-                <local:JsonEditor Grid.Column="0" Grid.Row="0"  x:Name="SourcePane"    Title="Source"    Button1Tooltip="Load source file"    Button2Tooltip="Save" Button3Tooltip="Save As" FirstButtonClick="SourcePane_FirstButtonClick"    SecondButtonClick="SourcePane_SecondButtonClick"    ThirdButtonClick="SourcePane_ThirdButtonClick" EditBoxMargin="0 0 0 0"></local:JsonEditor>
+                <local:JsonEditor Grid.Column="0" Grid.Row="0"  x:Name="SourcePane"    Title="Source"    Button1Tooltip="Load source file"    Button2Tooltip="Save" Button3Tooltip="Save As" FirstButtonClick="Pane_Click_LoadFile"    SecondButtonClick="Pane_Click_Save"    ThirdButtonClick="Pane_Click_SaveAs" EditBoxMargin="0 0 0 0"></local:JsonEditor>
                 <GridSplitter     Grid.Column="0" Grid.Row="1"  Style="{StaticResource VertGridSplitter}" Height="30" />
-                <local:JsonEditor Grid.Column="0" Grid.Row="2"  x:Name="DocumentsPane" Title="Documents" Button1Tooltip="Load document file" Button2Tooltip="Save" Button3Tooltip="Save As" FirstButtonClick="DocumentsPane_FirstButtonClick" SecondButtonClick="DocumentsPane_SecondButtonClick" ThirdButtonClick="DocumentsPane_ThirdButtonClick" EditBoxMargin="0 0 0 0"></local:JsonEditor>
+                <local:JsonEditor Grid.Column="0" Grid.Row="2"  x:Name="DocumentsPane" Title="Documents" Button1Tooltip="Load document file" Button2Tooltip="Save" Button3Tooltip="Save As" FirstButtonClick="Pane_Click_LoadFile" SecondButtonClick="Pane_Click_Save" ThirdButtonClick="Pane_Click_SaveAs" EditBoxMargin="0 0 0 0"></local:JsonEditor>
             </Grid>
             <GridSplitter Grid.Column="1" Grid.Row="0"  Style="{StaticResource GridSplitter}" />
             <Grid Grid.Column="2" Grid.Row="0">
@@ -52,12 +52,12 @@
                     <RowDefinition Height="5"></RowDefinition>
                     <RowDefinition Height="31" MinHeight="31"></RowDefinition>
                 </Grid.RowDefinitions>
-                <local:JsonEditor  Grid.Column="0" Grid.Row="0"  x:Name="TransformPane" Title="Transform" Button1Tooltip="Load transform file" Button2Tooltip="Save" Button3Tooltip="Save As" FirstButtonClick="TransformPane_FirstButtonClick" SecondButtonClick="TransformPane_SecondButtonClick" ThirdButtonClick="TransformPane_ThirdButtonClick" EditBoxMargin="0 0 0 0"></local:JsonEditor>
+                <local:JsonEditor  Grid.Column="0" Grid.Row="0"  x:Name="TransformPane" Title="Transform" Button1Tooltip="Load transform file" Button2Tooltip="Save" Button3Tooltip="Save As" FirstButtonClick="Pane_Click_LoadFile" SecondButtonClick="Pane_Click_Save" ThirdButtonClick="Pane_Click_SaveAs" EditBoxMargin="0 0 0 0"></local:JsonEditor>
                 <GridSplitter      Grid.Column="0" Grid.Row="1"  Style="{StaticResource VertGridSplitter}" />
-                <local:JsonEditor  Grid.Column="0" Grid.Row="2"  x:Name="IncludesPane" Title="Includes" Button1Tooltip="Load include file" Button2Tooltip="Save" Button3Tooltip="Save As" FirstButtonClick="IncludesPane_FirstButtonClick" SecondButtonClick="IncludesPane_SecondButtonClick" ThirdButtonClick="IncludesPane_ThirdButtonClick" EditBoxMargin="0 0 0 0"></local:JsonEditor>
+                <local:JsonEditor  Grid.Column="0" Grid.Row="2"  x:Name="IncludesPane" Title="Includes" Button1Tooltip="Load include file" Button2Tooltip="Save" Button3Tooltip="Save As" FirstButtonClick="Pane_Click_LoadFile" SecondButtonClick="Pane_Click_Save" ThirdButtonClick="Pane_Click_SaveAs" EditBoxMargin="0 0 0 0"></local:JsonEditor>
             </Grid>
             <GridSplitter      Grid.Column="3" Grid.Row="0"  Style="{StaticResource GridSplitter}" />
-            <local:JsonEditor  Grid.Column="4" Grid.Row="0"  x:Name="OutputPane"    Title="Output"    Button1Tooltip="Perform transform" Button3Tooltip="Save As" Button1Image="Assets/Buttons/glyphicons-square-play.png" FirstButtonClick="OutputPane_FirstButtonClick" SecondButtonClick="OutputPane_SecondButtonClick" ThirdButtonClick="OutputPane_ThirdButtonClick" EditBoxMargin="0 0 5 0" IsReadOnly="True"></local:JsonEditor>
+            <local:JsonEditor  Grid.Column="4" Grid.Row="0"  x:Name="OutputPane"    Title="Output"    Button1Tooltip="Perform transform" Button3Tooltip="Save As" Button1Image="Assets/Buttons/glyphicons-square-play.png" FirstButtonClick="OutputPane_FirstButtonClick" SecondButtonClick="Pane_Click_Save" ThirdButtonClick="Pane_Click_SaveAs" EditBoxMargin="0 0 5 0" IsReadOnly="True"></local:JsonEditor>
         </Grid>
     </Grid>
 </Window>

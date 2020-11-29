@@ -63,6 +63,7 @@
     <PackageReference Include="AvalonEdit" Version="6.0.1" />
     <PackageReference Include="JTran" Version="2.3.1" />
     <PackageReference Include="MondoCore.Common" Version="1.2.0" />
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>

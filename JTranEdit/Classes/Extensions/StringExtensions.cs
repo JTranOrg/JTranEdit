@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using MondoCore.Common;
-using JTranEdit.Classes.Extensions;
 
 namespace JTranEdit
 {

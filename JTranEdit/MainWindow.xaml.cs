@@ -6,7 +6,6 @@ using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Xml;
 
-using Microsoft.Win32;
 using System.Diagnostics;
 
 using ICSharpCode.AvalonEdit;
@@ -18,6 +17,7 @@ using System.Reflection.Metadata.Ecma335;
 
 using JTranEdit.Dialogs;
 using System.ComponentModel;
+using System.Windows.Controls;
 
 namespace JTranEdit
 {
@@ -27,37 +27,59 @@ namespace JTranEdit
     public partial class MainWindow : Window
     {
         private Preferences _preferences = new Preferences();
+        public static MainWindow Instance;
 
         public MainWindow()
         {
             var docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            _preferences.IncludePaths.Add(Path.Combine(docPath, "JTran Samples\\Includes")); // ???
-            _preferences.DocumentPaths.Add(Path.Combine(docPath, "JTran Samples\\Documents")); // ???
+            Instance = this;
 
             _preferences.ShowLineNumbers = JTranEdit.user.Default.ShowLineNumbers;
             _preferences.ShowOutlining   = JTranEdit.user.Default.ShowOutlining;
             _preferences.SaveOnTransform = JTranEdit.user.Default.SaveOnTransform;
             _preferences.AutoSave        = JTranEdit.user.Default.AutoSave;
 
+            if(!string.IsNullOrWhiteSpace(JTranEdit.user.Default.LastIncludeFile))
+                _preferences.IncludePath = Path.GetDirectoryName(JTranEdit.user.Default.LastIncludeFile);
+            else
+                _preferences.IncludePath = docPath;
+
+            if(!string.IsNullOrWhiteSpace(JTranEdit.user.Default.LastDocumentFile))
+                _preferences.DocumentPath = Path.GetDirectoryName(JTranEdit.user.Default.LastDocumentFile);
+            else
+                _preferences.DocumentPath = docPath;
+
             LoadHighlighting();
             InitializeComponent();
 
-            InitEditor(SourcePane,      JTranEdit.user.Default.LastSourceFile);
-            InitEditor(TransformPane,   JTranEdit.user.Default.LastTransformFile);
-            InitEditor(OutputPane,      JTranEdit.user.Default.LastOutputFile);
-            InitEditor(DocumentsPane,   JTranEdit.user.Default.LastDocumentFile);
-            InitEditor(IncludesPane,    JTranEdit.user.Default.LastIncludeFile);
+            InitEditor(SourcePane,      "LastSourceFile");
+            InitEditor(TransformPane,   "LastTransformFile");
+            InitEditor(OutputPane,      "LastOutputFile");
+            InitEditor(DocumentsPane,   "LastDocumentFile");
+            InitEditor(IncludesPane,    "LastIncludeFile");
         }
 
-        private void InitEditor(ICodeEditor editor, string lastFile)
+        private void InitEditor(ICodeEditor editor, string settingName)
         {        
             editor.Preferences = _preferences;
-            editor.ViewModel   = new JsonEditViewModel(editor.TextBox, new JsonCodeCompletion(editor));
+            editor.ViewModel   = new JsonEditViewModel(editor.TextBox, new JsonCodeCompletion(editor), _preferences) { SettingName = settingName };
+            
+            var lastFile = JTranEdit.user.Default[settingName]?.ToString() ?? "";
 
             if(!string.IsNullOrWhiteSpace(lastFile))
             {
-                LoadFile(editor, lastFile);
+                try
+                { 
+                    editor.LoadFile(lastFile);
+                }
+                catch
+                {
+                    // If can't load last file then just ignore
+
+                    // Set last file to nothing
+                    JTranEdit.user.Default[settingName] = "";
+                }
             }
         }
 
@@ -97,26 +119,25 @@ namespace JTranEdit
             });
         }
 
+        public void SetOutlining(bool outline)
+        {
+            SourcePane.Outlining    = outline;
+            TransformPane.Outlining = outline;
+            OutputPane.Outlining    = outline;
+            DocumentsPane.Outlining = outline;
+            IncludesPane.Outlining  = outline;
+        }
+
         #region Button Click Handlers
 
-        private void SourcePane_FirstButtonClick(object sender, RoutedEventArgs e)
-        {
-            LoadFile(SourcePane, "Json Files (*.json)|*.json", JTranEdit.user.Default.LastSourceFile);
-        }
+        private const string JsonFilter  = "Json Files (*.json)|*.json";
+        private const string JTranFilter = "Json Files (*.json)|*.json|JTran Files (*.jtran)|*.jtran";
 
-        private void TransformPane_FirstButtonClick(object sender, RoutedEventArgs e)
+        private void Pane_Click_LoadFile(object sender, RoutedEventArgs e)
         {
-            LoadFile(TransformPane, "Json Files (*.json)|*.json|JTran Files (*.jtran)|*.jtran", JTranEdit.user.Default.LastTransformFile);
-        }
+            var editor = (((sender as FrameworkElement).Parent as FrameworkElement).Parent as FrameworkElement).Parent as JsonEditor;
 
-        private void DocumentsPane_FirstButtonClick(object sender, RoutedEventArgs e)
-        {
-            LoadFile(DocumentsPane, "Json Files (*.json)|*.json", JTranEdit.user.Default.LastDocumentFile);
-        }
-
-        private void IncludesPane_FirstButtonClick(object sender, RoutedEventArgs e)
-        {
-            LoadFile(IncludesPane, "Json Files (*.json)|*.json|JTran Files (*.jtran)|*.jtran", JTranEdit.user.Default.LastIncludeFile);
+            editor.LoadFile(JTranFilter, JTranEdit.user.Default[editor.ViewModel.SettingName].ToString());
         }
 
         private void OutputPane_FirstButtonClick(object sender, RoutedEventArgs e)
@@ -124,54 +145,18 @@ namespace JTranEdit
             DoTransform();
         }
 
-        private void SourcePane_SecondButtonClick(object sender, RoutedEventArgs e)
+        private void Pane_Click_Save(object sender, RoutedEventArgs e)
         {
-            SaveFile(SourcePane, JTranEdit.user.Default.LastSourceFile);
+            var editor = (((sender as FrameworkElement).Parent as FrameworkElement).Parent as FrameworkElement).Parent as JsonEditor;
+
+            editor.SaveFile(JTranEdit.user.Default[editor.ViewModel.SettingName].ToString());
         }
 
-        private void TransformPane_SecondButtonClick(object sender, RoutedEventArgs e)
+        private void Pane_Click_SaveAs(object sender, RoutedEventArgs e)
         {
-            SaveFile(TransformPane, JTranEdit.user.Default.LastTransformFile);
-        }
+            var editor = (((sender as FrameworkElement).Parent as FrameworkElement).Parent as FrameworkElement).Parent as JsonEditor;
 
-        private void DocumentsPane_SecondButtonClick(object sender, RoutedEventArgs e)
-        {
-            SaveFile(DocumentsPane, JTranEdit.user.Default.LastDocumentFile);
-        }
-
-        private void IncludesPane_SecondButtonClick(object sender, RoutedEventArgs e)
-        {
-            SaveFile(IncludesPane, JTranEdit.user.Default.LastIncludeFile);
-        }
-
-        private void OutputPane_SecondButtonClick(object sender, RoutedEventArgs e)
-        {
-            SaveFile(OutputPane, JTranEdit.user.Default.LastOutputFile);
-        }
-
-        private void SourcePane_ThirdButtonClick(object sender, RoutedEventArgs e)
-        {
-            SaveAsFile(SourcePane, JTranEdit.user.Default.LastSourceFile);
-        }
-
-        private void TransformPane_ThirdButtonClick(object sender, RoutedEventArgs e)
-        {
-            SaveAsFile(TransformPane, JTranEdit.user.Default.LastTransformFile);
-        }
-
-        private void OutputPane_ThirdButtonClick(object sender, RoutedEventArgs e)
-        {
-            SaveAsFile(OutputPane, JTranEdit.user.Default.LastOutputFile);
-        }
-
-        private void DocumentsPane_ThirdButtonClick(object sender, RoutedEventArgs e)
-        {
-            SaveAsFile(DocumentsPane, JTranEdit.user.Default.LastDocumentFile);
-        }
-
-        private void IncludesPane_ThirdButtonClick(object sender, RoutedEventArgs e)
-        {
-            SaveAsFile(IncludesPane, JTranEdit.user.Default.LastIncludeFile);
+            editor.SaveAsFile(JTranEdit.user.Default[editor.ViewModel.SettingName].ToString());
         }
 
         #endregion
@@ -217,10 +202,10 @@ namespace JTranEdit
             { 
                 if(_preferences.SaveOnTransform)
                 {
-                    SaveFile(SourcePane,    "Sources");
-                    SaveFile(TransformPane, "Transforms");
-                    SaveFile(DocumentsPane, "Documents");
-                    SaveFile(IncludesPane,  "Includes");
+                    SourcePane.SaveFile("Sources");
+                    TransformPane.SaveFile("Transforms");
+                    DocumentsPane.SaveFile("Documents");
+                    IncludesPane.SaveFile("Includes");
                 }
 
                 var source    = SourcePane.JsonContent;
@@ -248,90 +233,7 @@ namespace JTranEdit
                 MessageBox.Show(ex.Message, "JTranEdit", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        /// <summary>
-        /// Load a file and set text of json editor
-        /// </summary>
-        /// <param name="editor"></param>
-        private void LoadFile(ICodeEditor editor, string filter, string lastFile)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            if(!string.IsNullOrWhiteSpace(editor.CurrentFileName))
-                openFileDialog.InitialDirectory = Path.GetDirectoryName(editor.CurrentFileName);
-            else if(!string.IsNullOrWhiteSpace(lastFile))
-                openFileDialog.InitialDirectory = Path.GetDirectoryName(lastFile);
-
-            openFileDialog.Filter = filter;
-
-			if(openFileDialog.ShowDialog() == true)
-            { 
-                LoadFile(editor, openFileDialog.FileName);
-            }
-
-            return;
-        }        
-        
-        private void LoadFile(ICodeEditor editor, string fileName)
-        {
-            var result = File.ReadAllText(fileName);
-
-            if(!string.IsNullOrWhiteSpace(result))
-            {
-                editor.CurrentFileName = fileName;
-                editor.JsonContent     = result;
-            }
-
-            return;
-        }
-
-        /// <summary>
-        /// Save a file and set text of json editor
-        /// </summary>
-        /// <param name="editor"></param>
-        private void SaveAsFile(ICodeEditor editor, string lastFile)
-        {
-            var content = editor.JsonContent;
-
-            if(!string.IsNullOrWhiteSpace(content))
-            { 
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-                if(!string.IsNullOrWhiteSpace(editor.CurrentFileName))
-                    saveFileDialog.InitialDirectory = Path.GetDirectoryName(editor.CurrentFileName);
-                else if(!string.IsNullOrWhiteSpace(lastFile))
-                    saveFileDialog.InitialDirectory = Path.GetDirectoryName(lastFile);
-
-			    if(saveFileDialog.ShowDialog() == true)
-                {                 
-                    File.WriteAllText(saveFileDialog.FileName, content);
-                    editor.CurrentFileName =  saveFileDialog.FileName;
-                }
-            }
-            return;
-        }
-
-        /// <summary>
-        /// Save a file and set text of json editor
-        /// </summary>
-        /// <param name="editor"></param>
-        private void SaveFile(ICodeEditor editor, string lastFile)
-        {
-            var content = editor.JsonContent;
-
-            if(!string.IsNullOrWhiteSpace(content))
-            { 
-			    if(!string.IsNullOrWhiteSpace(editor.CurrentFileName))
-                {                 
-                    File.WriteAllText(editor.CurrentFileName, editor.JsonContent);
-                }
-                else
-                    SaveAsFile(editor, lastFile);
-            }
-
-            return;
-        }
-
+   
         private void LoadHighlighting()
         {
 			IHighlightingDefinition customHighlighting;

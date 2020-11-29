@@ -126,6 +126,16 @@ namespace JTranEdit
             }
         }
 
+       public bool Outlining 
+        { 
+            get { return this.Preferences.ShowOutlining; }
+            set 
+            { 
+                this.Preferences.ShowOutlining = value;
+                this.ViewModel.UpdateFoldings(winEditBox.Document);
+            }
+        }
+
         public void UpdateFoldings()
         {
           this.ViewModel.UpdateFoldings(winEditBox.Document);

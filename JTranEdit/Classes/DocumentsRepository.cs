@@ -3,23 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
+using JTran;
+
 namespace JTranEdit
 {
         /****************************************************************************/
         /****************************************************************************/
-        internal class FileIncludeRepository : IDictionary<string, string>
+        internal class DocumentsRepository : IDictionary<string, IDocumentRepository>
         {
             private readonly string _path;
-            private IDictionary<string, string> _cache = new Dictionary<string, string>();
+            private IDictionary<string, IDocumentRepository> _cache = new Dictionary<string, IDocumentRepository>();
 
             /****************************************************************************/
-            internal FileIncludeRepository(string path)
+            internal DocumentsRepository(string path)
             {
                 _path = path;
             }
 
              /****************************************************************************/
-             public string this[string key] 
+             public IDocumentRepository this[string key] 
             { 
                 get 
                 { 
@@ -28,21 +30,11 @@ namespace JTranEdit
 
                     var fullPath =  Path.Combine(_path, key); 
 
-                    if(File.Exists(fullPath))
-                    {
-                        var result = ""; 
+                    var repo = new FileDocumentRepository(fullPath);
 
-                        using(var stream = File.OpenRead(fullPath))
-                        {
-                            result = stream.ReadString();
-                        }
+                    _cache.Add(key, repo);
 
-                        _cache.Add(key, result);
-
-                        return result;
-                    }
-
-                    throw new FileNotFoundException($"The include file named {key} was not found.");
+                    return repo;
                 }
 
                 set { throw new NotSupportedException(); } 
@@ -54,32 +46,24 @@ namespace JTranEdit
             /****************************************************************************/
             public bool ContainsKey(string key)
             {
-                if(_cache.ContainsKey(key))
-                    return true;
-
-                var fullPath =  Path.Combine(_path, key); 
-
-                if(File.Exists(fullPath))
-                    return true;
-
-                return false;
+                return true;
             }
 
             #region NotSupported
 
             public ICollection<string> Keys => throw new NotSupportedException();
 
-            public ICollection<string> Values => throw new NotSupportedException();
+            public ICollection<IDocumentRepository> Values => throw new NotSupportedException();
 
             public int Count => throw new NotSupportedException();
 
 
-            public void Add(string key, string value)
+            public void Add(string key, IDocumentRepository value)
             {
                 throw new NotSupportedException();
             }
 
-            public void Add(KeyValuePair<string, string> item)
+            public void Add(KeyValuePair<string, IDocumentRepository> item)
             {
                 throw new NotSupportedException();
             }
@@ -89,17 +73,17 @@ namespace JTranEdit
                 throw new NotSupportedException();
             }
 
-            public bool Contains(KeyValuePair<string, string> item)
+            public bool Contains(KeyValuePair<string, IDocumentRepository> item)
             {
                 throw new NotSupportedException();
             }
 
-            public void CopyTo(KeyValuePair<string, string>[] array, int arrayIndex)
+            public void CopyTo(KeyValuePair<string, IDocumentRepository>[] array, int arrayIndex)
             {
                 throw new NotSupportedException();
             }
 
-            public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+            public IEnumerator<KeyValuePair<string, IDocumentRepository>> GetEnumerator()
             {
                 throw new NotSupportedException();
             }
@@ -109,12 +93,12 @@ namespace JTranEdit
                 throw new NotSupportedException();
             }
 
-            public bool Remove(KeyValuePair<string, string> item)
+            public bool Remove(KeyValuePair<string, IDocumentRepository> item)
             {
                 throw new NotSupportedException();
             }
 
-            public bool TryGetValue(string key, out string value)
+            public bool TryGetValue(string key, out IDocumentRepository value)
             {
                 throw new NotSupportedException();
             }

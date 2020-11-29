@@ -25,11 +25,11 @@ namespace JTranEdit
         /****************************************************************************/
         public string Transform(string source, string transform)
         {
-            var transformer  = new JTran.Transformer(transform, includeSource: new FileIncludeRepository(_preferences.IncludePaths)); 
+            var transformer  = new JTran.Transformer(transform, includeSource: new FileIncludeRepository(_preferences.IncludePath)); 
 
             var context = new TransformerContext();
 
-            context.DocumentRepositories["race"] = new FileDocumentRepository(_preferences.DocumentPaths[0]);
+            context.DocumentRepositories = new DocumentsRepository(_preferences.DocumentPath); 
 
             var result  = transformer.Transform(source, context);
             var expando = result.JsonToExpando() as ExpandoObject;

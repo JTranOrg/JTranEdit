@@ -13,9 +13,9 @@ namespace JTranEdit
         private readonly ICodeCompletion _codeCompletion;
         private bool _enabled = true;
 
-        public JsonEditViewModel(TextEditor winEditor, ICodeCompletion codeCompletion)
+        public JsonEditViewModel(TextEditor winEditor, ICodeCompletion codeCompletion, Preferences preferences)
         {
-            _foldingStrategy = new JsonFoldingStrategies(winEditor, null);
+            _foldingStrategy = new JsonFoldingStrategies(winEditor, preferences);
             _codeCompletion  = codeCompletion;
         }
 
@@ -32,6 +32,7 @@ namespace JTranEdit
         }
 
         public Visibility EditVisibility    { get; set; } = Visibility.Visible;
+        public string     SettingName       { get; set; }
 
         public void UpdateFoldings(TextDocument doc)
         {

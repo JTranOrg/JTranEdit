@@ -26,7 +26,10 @@ namespace JTranEdit
         {
             var fullPath = Path.Combine(_path, name + ".json");
 
-            return File.ReadAllText(fullPath);
+            using(var stream = File.OpenRead(fullPath))
+            {
+                return stream.ReadString();
+            }
         }
     }
 }

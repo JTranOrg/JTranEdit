@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
+using Microsoft.Win32;
 
 namespace JTranEdit.Dialogs
 {
@@ -17,60 +12,17 @@ namespace JTranEdit.Dialogs
     /// </summary>
     public partial class PreferencesDialog : Window
     {
+        private readonly Preferences _oldPreferences;
+        private readonly Preferences _preferences;
+
         public PreferencesDialog(Preferences preferences)
         {
             InitializeComponent();
 
-            this.DataContext = preferences;
-        }
+            _oldPreferences = new Preferences(preferences);
+            this.DataContext = _preferences = preferences;
 
-        public bool ShowGeneral 
-        { 
-            get { return (bool)GetValue(ShowGeneralDependencyProperty); }
-            set 
-            { 
-                SetValue(ShowGeneralDependencyProperty, value); 
-
-                GeneralPane.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-
-                if(value)
-                {
-                    this.ShowInclude = false;
-                    this.ShowDocument = false;
-                }
-            }
-        }
-
-        public bool ShowInclude 
-        { 
-            get { return (bool)GetValue(ShowIncludeDependencyProperty); }
-            set 
-            { 
-                SetValue(ShowIncludeDependencyProperty, value); 
-                IncludePane.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-
-                if(value)
-                {
-                    this.ShowGeneral = false;
-                    this.ShowDocument = false;
-                }
-            }
-        }
-
-        public bool ShowDocument 
-        { 
-            get { return (bool)GetValue(ShowDocumentDependencyProperty); }
-            set 
-            { 
-                SetValue(ShowDocumentDependencyProperty, value); 
-                DocumentPane.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-
-                if(value)
-                {
-                    this.ShowInclude = false;
-                    this.ShowGeneral = false;
-                }
-            }
+            ckShowOutlining.IsChecked = preferences.ShowOutlining;
         }
 
         #region Dependencies
@@ -93,7 +45,54 @@ namespace JTranEdit.Dialogs
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
+            _preferences.IncludePath       = _oldPreferences.IncludePath;      
+            _preferences.DocumentPath      = _oldPreferences.DocumentPath;     
+            _preferences.BracketCompletion = _oldPreferences.BracketCompletion;
+            _preferences.Indent            = _oldPreferences.Indent;           
+            _preferences.ShowLineNumbers   = _oldPreferences.ShowLineNumbers;  
+            _preferences.ShowOutlining     = _oldPreferences.ShowOutlining;    
+            _preferences.SaveOnTransform   = _oldPreferences.SaveOnTransform;  
+            _preferences.AutoSave          = _oldPreferences.AutoSave;         
+
             this.Close();
+        }
+
+        private void Include_FolderOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+
+            dlg.SelectedPath = _preferences.IncludePath;
+
+            if(dlg.ShowDialog() == true)
+            {
+                _preferences.IncludePath = dlg.SelectedPath;
+                winIncludePath.Text = dlg.SelectedPath;
+            }
+        }
+
+        private void Documents_FolderOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+
+            dlg.SelectedPath = _preferences.DocumentPath;
+
+            if(dlg.ShowDialog() == true)
+            {
+                _preferences.DocumentPath = dlg.SelectedPath;
+                winDocumentsPath.Text = dlg.SelectedPath;
+            }
+        }
+
+        private void ckShowOutlining_Checked(object sender, RoutedEventArgs e)
+        {
+            _preferences.ShowOutlining = true;
+            MainWindow.Instance.SetOutlining(true);
+        }
+
+        private void ckShowOutlining_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _preferences.ShowOutlining = false;
+            MainWindow.Instance.SetOutlining(false);
         }
     }
 }
