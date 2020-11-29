@@ -1,0 +1,48 @@
+﻿<Window x:Class="JTranEdit.Dialogs.PreferencesDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JTranEdit.Dialogs"
+        mc:Ignorable="d"
+        Title="JTranEdit Preferences" Height="350" Width="570"
+        Background="#F8F8F8"
+        x:Name="thisControl"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" Margin="20 30 20 20">
+            <CheckBox IsChecked="{Binding ShowLineNumbers, Mode=TwoWay}" Margin="0 6 0 0">Show Line Numbers</CheckBox>
+            <CheckBox x:Name="ckShowOutlining" Checked="ckShowOutlining_Checked" Unchecked="ckShowOutlining_Unchecked" Margin="0 6 0 0">Show Outlining</CheckBox>
+            <CheckBox IsChecked="{Binding SaveOnTransform, Mode=TwoWay}" Margin="0 6 0 0">Save Files on Transform</CheckBox>
+
+            <Label Margin="0 10 0 0">Include Path</Label>
+            <Grid Margin="5 0 0 0" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="20"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="winIncludePath" Grid.Column="0" Grid.Row="0"  Text="{Binding IncludePath, Mode=TwoWay}"></TextBox>
+                <Button  Grid.Column="1" Grid.Row="0" Width="20" FontWeight="Bold" FontSize="12" Margin="-1 0 0 0" Click="Include_FolderOpen_Click">...</Button>
+            </Grid>
+
+            <Label Margin="0 10 0 0">Documents Path</Label>
+            <Grid Margin="5 0 0 0" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="20"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="winDocumentsPath" Grid.Column="0" Grid.Row="0" Text="{Binding DocumentPath, Mode=TwoWay}"></TextBox>
+                <Button  Grid.Column="1" Grid.Row="0" Width="20" FontWeight="Bold" FontSize="12" Margin="-1 0 0 0" Click="Documents_FolderOpen_Click">...</Button>
+            </Grid>
+         </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="50">
+            <Button Height="24" Width="90" Margin="0 10 0 10" Click="btnOK_Click">OK</Button>
+            <Button Height="24" Width="90" Margin="10" Click="btnCancel_Click">Cancel</Button>
+        </StackPanel>
+    </Grid>
+  </Window>

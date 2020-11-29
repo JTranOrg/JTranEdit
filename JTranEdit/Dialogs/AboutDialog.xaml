@@ -1,0 +1,31 @@
+﻿<Window x:Class="JTranEdit.Dialogs.AboutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JTranEdit.Dialogs"
+        mc:Ignorable="d"
+        Title="About JTranEdit" Height="350" Width="500" Background="#F8F8F8">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" FontSize="36" Padding="20 5 0 0" Foreground="White" Background="LightSlateGray">JTranEdit</Label>
+        <StackPanel Grid.Column="0" Grid.Row="1" Margin="0" Background="White">
+            <Label HorizontalAlignment="Left" FontSize="11" Margin="10 0 0 0">© 2020 Jim Lightfoot, All Rights Reserved</Label>
+            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="13" Margin="20 36 0 0" Height="42" Width="442">
+                An editor to edit and perform JTran transformations. JTran is a language to transform one JSON document into another format or schema.
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="13" Margin="20 5 10 0" Height="24" Width="442">
+                This application is Freeware and may be distributed freely.
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="13" Margin="20 5 10 0" Height="87" Width="442">
+                The source code for this application is open source and is available on <Hyperlink NavigateUri="https://github.com/JTranOrg/JTran" RequestNavigate="Hyperlink_RequestNavigate">GitHub</Hyperlink>.
+            </TextBlock>
+        </StackPanel>
+        <Button Grid.Column="0" Grid.Row="2" x:Name="btnClose" Width="140" Height="Auto" Padding="5" Margin="0 0 12 11" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="btnClose_Click">OK</Button>
+    </Grid>
+</Window>
